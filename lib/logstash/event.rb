@@ -165,7 +165,11 @@ class LogStash::Event
   
   public
   def to_json(*args)
-    return @data.to_json(*args) 
+    begin
+        return @data.to_json(*args)
+    rescue GeneratorError
+        return JSON.parse("{\"logstash-error\":\"Unrecognized character in line\"}")
+    end
   end # def to_json
 
   def to_hash
